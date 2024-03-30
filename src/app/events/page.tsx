@@ -4,7 +4,7 @@ import event2 from "@/assets/img/backgrounds/event2.png";
 import event3 from "@/assets/img/backgrounds/event3.png";
 import Link from "next/link";
 
-const events = [
+export const events = [
   {
     id: "1",
     name: "Lil uzi vert’s concert",
