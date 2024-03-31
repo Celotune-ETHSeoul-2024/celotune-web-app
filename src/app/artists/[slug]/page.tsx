@@ -13,6 +13,8 @@ import avatar1 from "@/assets/img/avatars/avatar1.png";
 import playlistImg2 from "@/assets/img/nfts/NFT-2.jpg";
 import playlistImg3 from "@/assets/img/nfts/NFT-3.jpg";
 import Image from "next/image";
+import { handleMintNft } from "../page";
+import { useCelo } from "@celo/react-celo";
 
 function Loader() {
   return (
@@ -38,7 +40,9 @@ function Loader() {
   );
 }
 
-export function Artist() {
+function Artist() {
+  const { address } = useCelo();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isFollowed, setIsFollowed] = useState(() => sessionStorage.getItem("followArtist"));
 
@@ -65,6 +69,8 @@ export function Artist() {
         >
           <div className="dark:!border-navy-700 absolute -bottom-12 flex h-[87px] w-[87px] items-center justify-center rounded-full border-[4px] border-white bg-pink-400">
             <Image
+              height={200}
+              width={200}
               className="h-full w-full rounded-full"
               style={{ backgroundSize: "", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
               src={avatar1.src}
@@ -142,7 +148,12 @@ export function Artist() {
                 />
               </Card>
 
-              <Card extra="animate-pulse flex flex-col justify-center items-center w-[118px] min-w-[118px] h-[118px] p-1 bg-cover cursor-pointer">
+              <Card
+                onClick={() => {
+                  handleMintNft(address as string);
+                }}
+                extra="animate-pulse flex flex-col justify-center items-center w-[118px] min-w-[118px] h-[118px] p-1 bg-cover cursor-pointer"
+              >
                 <div
                   className="relative flex h-full w-full items-center justify-center rounded-[16px] bg-[#000] bg-cover bg-clip-border !opacity-30"
                   style={{ backgroundImage: `url(${playlistImg3.src})` }}
@@ -190,3 +201,5 @@ export function Artist() {
     </div>
   );
 }
+
+export default Artist;

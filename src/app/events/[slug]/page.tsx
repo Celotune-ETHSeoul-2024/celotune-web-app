@@ -11,6 +11,8 @@ import avatar4 from "@/assets/img/avatars/avatar4.png";
 import { events } from "@/app/events/page";
 import Link from "next/link";
 import Image from "next/image";
+import { handleMintNft } from "@/app/artists/page";
+import { useCelo } from "@celo/react-celo";
 
 interface ITicketCounts {
   standard: number;
@@ -27,6 +29,8 @@ const _TicketPrice = {
 };
 
 export const Event = ({ params }: { params: { slug: string } }) => {
+  const { address } = useCelo();
+
   const eventId = parseInt(params.slug!, 10);
 
   const eventData = events[eventId];
@@ -124,7 +128,9 @@ export const Event = ({ params }: { params: { slug: string } }) => {
         </div>
 
         <button
-          onClick={() => alert("Tickets purchased!")}
+          onClick={() => {
+            handleMintNft(address as string);
+          }}
           className="mt-4 flex h-[40px] w-[100%] items-center justify-center gap-2 rounded-[40px] bg-[#fcff52] text-[14px] font-semibold text-black"
         >
           Buy Ticket

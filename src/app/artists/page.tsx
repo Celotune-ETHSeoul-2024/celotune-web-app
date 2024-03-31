@@ -55,34 +55,34 @@ const ArtistBox = ({ name, img, link }: { name: string; img: string; link: strin
   );
 };
 
+export async function handleMintNft(address: string) {
+  if (!address) return console.error("No address found");
+
+  try {
+    writeContract(config, {
+      abi,
+      address: contractAddress,
+      functionName: "safeMint",
+      args: [address as any],
+    }).then(() => {
+      toast("🦄 NFT has been minted!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 export default function Artist() {
   const { address } = useCelo();
-
-  async function handleMintNft() {
-    if (!address) return console.error("No address found");
-
-    try {
-      writeContract(config, {
-        abi,
-        address: contractAddress,
-        functionName: "safeMint",
-        args: [address as any],
-      }).then(() => {
-        toast("🦄 NFT has been minted!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  }
 
   return (
     <>
@@ -99,7 +99,7 @@ export default function Artist() {
       <Button
         className="pt-2"
         onClick={() => {
-          handleMintNft();
+          handleMintNft(address as string);
         }}
       >
         Mint artist's NFT 🦄
