@@ -13,8 +13,11 @@ import avatar1 from "@/assets/img/avatars/avatar1.png";
 import playlistImg2 from "@/assets/img/nfts/NFT-2.jpg";
 import playlistImg3 from "@/assets/img/nfts/NFT-3.jpg";
 import Image from "next/image";
-import { handleMintNft } from "../page";
 import { useCelo } from "@celo/react-celo";
+import { config } from "@/app/layout";
+import { writeContract, connect } from "@wagmi/core";
+import { injected } from "@wagmi/connectors";
+import { abi, contractAddress } from "@/abi/nft/abi";
 
 function Loader() {
   return (
@@ -45,6 +48,34 @@ function Artist() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isFollowed, setIsFollowed] = useState(() => sessionStorage.getItem("followArtist"));
+
+  async function handleMintNft(address: string) {
+    if (!address) return console.error("No address found");
+
+    try {
+      await connect(config, { connector: injected() });
+
+      writeContract(config, {
+        abi,
+        address: contractAddress,
+        functionName: "safeMint",
+        args: [address as any],
+      }).then(() => {
+        toast("🦄 Song NFT has been minted!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   useEffect(() => {
     setIsLoading(true);

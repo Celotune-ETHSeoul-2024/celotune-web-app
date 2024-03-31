@@ -11,8 +11,12 @@ import avatar4 from "@/assets/img/avatars/avatar4.png";
 import { events } from "@/app/events/page";
 import Link from "next/link";
 import Image from "next/image";
-import { handleMintNft } from "@/app/artists/page";
 import { useCelo } from "@celo/react-celo";
+import { writeContract, connect } from "@wagmi/core";
+import { injected } from "@wagmi/connectors";
+import { abi, contractAddress } from "@/abi/nft/abi";
+import { toast } from "react-toastify";
+import { config } from "@/app/layout";
 
 interface ITicketCounts {
   standard: number;
@@ -49,6 +53,34 @@ export const Event = ({ params }: { params: { slug: string } }) => {
       [type]: Math.max(prevCounts[type] + delta, 0), // Prevent negative values
     }));
   };
+
+  async function handleMintNft(address: string) {
+    if (!address) return console.error("No address found");
+
+    try {
+      await connect(config, { connector: injected() });
+
+      writeContract(config, {
+        abi,
+        address: contractAddress,
+        functionName: "safeMint",
+        args: [address as any],
+      }).then(() => {
+        toast("🦄 Song NFT has been minted!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <div className="relative w-full text-black">

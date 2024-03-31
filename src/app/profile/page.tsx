@@ -84,7 +84,7 @@ export default function MyTune() {
           </Card>
         </div>
 
-        <Button className="w-full" onClick={() => transfer()}>
+        <Button className="w-full" onClick={() => handleMintTokens()}>
           Mint Tokens
         </Button>
       </div>
