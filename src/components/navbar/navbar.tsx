@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { sliceEthAddress } from "@/utils/sliceAddress";
 
 const Navbar = () => {
-  const { connect, address } = useCelo();
+  const { connect, address, disconnect } = useCelo();
 
   return (
     <nav
@@ -22,7 +22,12 @@ const Navbar = () => {
 
         <div>
           {address ? (
-            <Button disabled>{sliceEthAddress(address)}</Button>
+            <div className="flex">
+              <Button variant="destructive" className="mr-2" onClick={async () => await disconnect()}>
+                Disc.
+              </Button>
+              <Button disabled>{sliceEthAddress(address)}</Button>
+            </div>
           ) : (
             <Button onClick={connect}>Connect wallet</Button>
           )}
