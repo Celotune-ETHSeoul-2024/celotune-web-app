@@ -8,7 +8,6 @@ import clock from "@/assets/icons/clock.svg";
 import diamond from "@/assets/icons/diamond.svg";
 import pin from "@/assets/icons/pin.svg";
 import avatar4 from "@/assets/img/avatars/avatar4.png";
-import { events } from "@/app/events/page";
 import Link from "next/link";
 import Image from "next/image";
 import { useCelo } from "@celo/react-celo";
