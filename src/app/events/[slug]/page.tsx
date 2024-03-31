@@ -32,7 +32,7 @@ const _TicketPrice = {
   meetAndGreet: "25 CELO",
 };
 
-export const Event = ({ params }: { params: { slug: string } }) => {
+export default function Event({ params }: { params: { slug: string } }) {
   const { address } = useCelo();
 
   const eventId = parseInt(params.slug!, 10);
@@ -170,6 +170,4 @@ export const Event = ({ params }: { params: { slug: string } }) => {
       </div>
     </div>
   );
-};
-
-export default Event;
+}

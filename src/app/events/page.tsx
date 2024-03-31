@@ -27,7 +27,7 @@ export const events = [
   },
 ];
 
-const Events = () => {
+export default function Events() {
   return (
     <div className="flex h-auto w-full flex-col gap-6">
       <h2 className="text-navy-700 mb-4 text-2xl font-bold dark:text-white">Upcoming Events</h2>
@@ -40,6 +40,4 @@ const Events = () => {
       </div>
     </div>
   );
-};
-
-export default Events;
+}

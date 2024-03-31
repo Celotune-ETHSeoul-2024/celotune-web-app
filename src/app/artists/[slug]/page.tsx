@@ -43,7 +43,7 @@ function Loader() {
   );
 }
 
-function Artist() {
+export default function Artist() {
   const { address } = useCelo();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -232,5 +232,3 @@ function Artist() {
     </div>
   );
 }
-
-export default Artist;

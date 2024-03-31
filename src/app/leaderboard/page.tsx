@@ -55,7 +55,7 @@ interface LeaderboardProps {
   leaders: Leader[];
 }
 
-export const Leaderboard = () => {
+export default function Leaderboard() {
   const getDeltaInfo = useCallback((delta: number) => {
     const deltaInfoMap: Record<number, { color: string; icon: JSX.Element }> = {
       0: {
@@ -109,6 +109,4 @@ export const Leaderboard = () => {
       </div>
     </div>
   );
-};
-
-export default Leaderboard;
+}
