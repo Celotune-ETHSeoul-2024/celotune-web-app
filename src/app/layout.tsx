@@ -20,9 +20,10 @@ import "react-toastify/dist/ReactToastify.css";
 const inter = Inter({ subsets: ["latin"] });
 
 const projectId = "c2d1032a4424947c0a8447929a10a25a";
+const url = "http://localhost:7777/";
 
 export const config = createConfig({
-  chains: [celo, celoAlfajores],
+  chains: [celoAlfajores],
   client({ chain }) {
     return createClient({ chain, transport: http() });
   },
@@ -42,7 +43,7 @@ export default function RootLayout({
           dapp={{
             name: "My awesome dApp",
             description: "My awesome description",
-            url: "https://982e-182-208-87-9.ngrok-free.app",
+            url,
             // if you plan on supporting WalletConnect compatible wallets, you need to provide a project ID, you can find it here: https://docs.walletconnect.com/2.0/cloud/relay
             walletConnectProjectId: projectId,
             // icon url is optional, but recommended

@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/card";
 
 import { useCelo } from "@celo/react-celo";
-import { writeContract } from "@wagmi/core";
+import { writeContract, connect } from "@wagmi/core";
+import { injected } from "@wagmi/connectors";
 import { abi, contractAddress } from "@/abi/nft/abi";
 import { toast } from "react-toastify";
 import { config } from "../layout";
@@ -59,6 +60,8 @@ export async function handleMintNft(address: string) {
   if (!address) return console.error("No address found");
 
   try {
+    await connect(config, { connector: injected() });
+
     writeContract(config, {
       abi,
       address: contractAddress,
@@ -88,7 +91,7 @@ export default function Artist() {
     <>
       <h2 className="text-navy-700 mb-4 text-2xl font-bold dark:text-white">Artists</h2>
 
-      <div className="grid h-full grid-cols-2 gap-4">
+      <div className="grid h-auto grid-cols-2 gap-4">
         {artistsMock.map((artist, index) => (
           <Link key={index} href={`/artists/${index}`}>
             <ArtistBox {...artist} />

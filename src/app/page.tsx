@@ -55,7 +55,7 @@ const HomeBox = ({
 export default function Home() {
   return (
     <>
-      <div className="grid h-full grid-cols-2 gap-4">
+      <div className="grid h-auto grid-cols-2 gap-4">
         {HomePages.map((item, index) => (
           <HomeBox key={index} {...item} />
         ))}

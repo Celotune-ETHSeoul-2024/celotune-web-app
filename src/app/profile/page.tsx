@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 import { useCelo } from "@celo/react-celo";
-import { writeContract } from "@wagmi/core";
+import { writeContract, connect } from "@wagmi/core";
+import { injected } from "@wagmi/connectors";
 import { abi, contractAddress } from "@/abi/mint/abi";
 import { toast } from "react-toastify";
 import { config } from "../layout";
@@ -22,6 +23,8 @@ export default function MyTune() {
     if (!address) return console.error("No address found");
 
     try {
+      await connect(config, { connector: injected() });
+
       writeContract(config, {
         abi,
         address: contractAddress,
@@ -173,7 +176,7 @@ export default function MyTune() {
       <div className="mb-4 flex justify-between pt-8">
         <h2 className="text-navy-700 mb-1 text-2xl font-bold dark:text-white">You have supported</h2>
       </div>
-      <div className="mx-auto flex flex-col gap-2">
+      <div className="mx-2 flex flex-col gap-2 pb-2">
         <Card
           extra="p-6 justify-center text-left w-auto h-[80px] p-1 bg-cover cursor-pointer shadow-xl shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none"
           onClick={() => {}}

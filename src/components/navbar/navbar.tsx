@@ -29,7 +29,7 @@ const Navbar = () => {
               <Button disabled>{sliceEthAddress(address)}</Button>
             </div>
           ) : (
-            <Button onClick={connect}>Connect wallet</Button>
+            <Button onClick={async () => await connect()}>Connect wallet</Button>
           )}
         </div>
       </div>
