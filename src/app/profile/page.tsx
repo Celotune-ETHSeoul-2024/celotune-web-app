@@ -17,7 +17,15 @@ import { config } from "../layout";
 
 export default function MyTune() {
   const router = useRouter();
-  const { address } = useCelo();
+  const { address, performActions } = useCelo();
+
+  /* Used on mobile devices -> Valora Integration */
+  /* async function transfer() {
+    await performActions(async (kit) => {
+      const cCELO = await kit.contracts.getStableToken();
+      await cCELO.transfer(wallet, 10).sendAndWaitForReceipt();
+    });
+  } */
 
   async function handleMintTokens() {
     if (!address) return console.error("No address found");
@@ -76,7 +84,7 @@ export default function MyTune() {
           </Card>
         </div>
 
-        <Button className="w-full" onClick={() => handleMintTokens()}>
+        <Button className="w-full" onClick={() => transfer()}>
           Mint Tokens
         </Button>
       </div>

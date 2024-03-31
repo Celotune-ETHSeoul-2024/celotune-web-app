@@ -56,6 +56,14 @@ const ArtistBox = ({ name, img, link }: { name: string; img: string; link: strin
   );
 };
 
+/* Used on mobile devices -> Valora Integration */
+/* async function transfer() {
+    const kit = await getConnectedKit();
+    const cUSD = await kit.contracts.getStableToken();
+    await cUSD.transfer(wallet, 10000).sendAndWaitForReceipt();
+  }
+  } */
+
 export async function handleMintNft(address: string) {
   if (!address) return console.error("No address found");
 
