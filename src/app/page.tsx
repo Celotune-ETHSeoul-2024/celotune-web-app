@@ -4,7 +4,7 @@ import Link from "next/link";
 const HomePages = [
   { title: "Artists", icon: "🎙️", link: "/artists" },
   { title: "Events", icon: "🎟️", link: "/events" },
-  { title: "My Tune", icon: "💎", link: "/my-tune" },
+  { title: "My Tune", icon: "💎", link: "/profile" },
 ];
 
 const HomeBox = ({ title, icon, link }: { title: string; icon: string; link: string }) => {

@@ -1,3 +1,5 @@
+"use client";
+
 import avatar1 from "@/assets/img/avatars/avatar1.png";
 import avatar2 from "@/assets/img/avatars/avatar2.png";
 import avatar3 from "@/assets/img/avatars/avatar3.png";
@@ -6,8 +8,25 @@ import Card from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-export function MyTune() {
+import { useCelo } from "@celo/react-celo";
+import { useWriteContract } from "wagmi";
+import { abi, contractAddress } from "@/abi/mint/abi";
+
+export default function MyTune() {
   const router = useRouter();
+  const { writeContract } = useWriteContract();
+  const { address } = useCelo();
+
+  function handleMintTokens() {
+    if (!address) return console.error("No address found");
+
+    writeContract({
+      abi,
+      address: contractAddress,
+      functionName: "mint",
+      args: [address as any, BigInt(10 * 10 ** 18)],
+    });
+  }
 
   return (
     <div className="flex h-full w-full flex-col gap-6">
@@ -38,15 +57,15 @@ export function MyTune() {
           </Card>
         </div>
 
-        <Button className="w-full" onClick={() => console.log("Mint Tokens")}>
+        <Button className="w-full" onClick={() => handleMintTokens()}>
           Mint Tokens
         </Button>
       </div>
 
       <h2 className="text-navy-700 mb-4 pt-4 text-2xl font-bold dark:text-white">Registered events</h2>
-      <div className="mx-auto mb-4 flex flex-col gap-4">
+      <div className="mx-2 mb-4 flex flex-col gap-4">
         <Card
-          extra="items-start p-6 text-left  justify-center flex-col h-[118px] p-1 bg-cover cursor-pointer shadow-xl shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none"
+          extra="items-start p-6 text-left justify-center flex-col h-[118px] p-1 bg-cover cursor-pointer shadow-md shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none"
           onClick={() => {
             router.push("/events/1");
           }}
@@ -59,7 +78,7 @@ export function MyTune() {
           <span className="font-semibold text-gray-700">26.04.2024</span>
         </Card>
         <Card
-          extra="items-start p-6 text-left justify-center w-auto flex-col h-[118px] p-1 bg-cover cursor-pointer shadow-xl shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none"
+          extra="items-start p-6 text-left justify-center w-auto flex-col h-[118px] p-1 bg-cover cursor-pointer shadow-md shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none"
           onClick={() => {
             router.push("/events/0");
           }}

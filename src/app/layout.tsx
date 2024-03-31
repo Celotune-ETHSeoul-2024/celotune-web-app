@@ -1,5 +1,10 @@
 "use client";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import { createConfig, WagmiProvider, http } from "wagmi";
+import { celo, celoAlfajores } from "viem/chains";
+import { createClient } from "viem";
 import { CeloProvider } from "@celo/react-celo";
 import "@celo/react-celo/lib/styles.css";
 
@@ -11,21 +16,32 @@ import Navbar from "@/components/navbar/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const projectId = "c2d1032a4424947c0a8447929a10a25a";
+
+const config = createConfig({
+  chains: [celo, celoAlfajores],
+  client({ chain }) {
+    return createClient({ chain, transport: http() });
+  },
+});
+
+const queryClient = new QueryClient();
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <QueryClientProvider client={queryClient}>
+      <WagmiProvider config={config}>
         <CeloProvider
           dapp={{
             name: "My awesome dApp",
             description: "My awesome description",
             url: "https://982e-182-208-87-9.ngrok-free.app",
             // if you plan on supporting WalletConnect compatible wallets, you need to provide a project ID, you can find it here: https://docs.walletconnect.com/2.0/cloud/relay
-            walletConnectProjectId: "c2d1032a4424947c0a8447929a10a25a",
+            walletConnectProjectId: projectId,
             // icon url is optional, but recommended
             icon: "https://example.com/icon.png",
           }}
@@ -38,13 +54,17 @@ export default function RootLayout({
             },
           }}
         >
-          <div className="bg-background dark:bg-background-900 flex min-h-screen w-full flex-col p-5 dark:text-white">
-            <Navbar />
+          <html lang="en">
+            <body className={inter.className}>
+              <div className="dark:bg-background-900 flex min-h-screen w-full flex-col bg-[#f4f4f4] p-5 dark:text-white">
+                <Navbar />
 
-            <div className="flex flex-col justify-center gap-6 overflow-y-auto pt-5">{children}</div>
-          </div>
+                <div className="flex flex-col justify-center gap-6 overflow-y-auto pt-5">{children}</div>
+              </div>
+            </body>
+          </html>
         </CeloProvider>
-      </body>
-    </html>
+      </WagmiProvider>
+    </QueryClientProvider>
   );
 }

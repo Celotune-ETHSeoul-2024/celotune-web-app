@@ -1,5 +1,11 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/card";
-import Link from "next/link";
+
+import { useCelo } from "@celo/react-celo";
+import { useWriteContract } from "wagmi";
+import { abi, contractAddress } from "@/abi/nft/abi";
 
 const artistsMock = [
   {
@@ -48,6 +54,20 @@ const ArtistBox = ({ name, img, link }: { name: string; img: string; link: strin
 };
 
 export default function Artist() {
+  const { writeContract } = useWriteContract();
+  const { address } = useCelo();
+
+  function handleMintNft() {
+    if (!address) return console.error("No address found");
+
+    writeContract({
+      abi,
+      address: contractAddress,
+      functionName: "safeMint",
+      args: [address as any],
+    });
+  }
+
   return (
     <>
       <h2 className="text-navy-700 mb-4 text-2xl font-bold dark:text-white">Artists</h2>
@@ -57,6 +77,15 @@ export default function Artist() {
           <ArtistBox key={index} {...artist} />
         ))}
       </div>
+
+      <Button
+        className="pt-2"
+        onClick={() => {
+          handleMintNft();
+        }}
+      >
+        Mint random artist's NFT
+      </Button>
     </>
   );
 }
