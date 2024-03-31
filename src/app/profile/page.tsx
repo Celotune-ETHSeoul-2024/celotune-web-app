@@ -9,23 +9,39 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 import { useCelo } from "@celo/react-celo";
-import { useWriteContract } from "wagmi";
+import { writeContract } from "@wagmi/core";
 import { abi, contractAddress } from "@/abi/mint/abi";
+import { toast } from "react-toastify";
+import { config } from "../layout";
 
 export default function MyTune() {
   const router = useRouter();
-  const { writeContract } = useWriteContract();
   const { address } = useCelo();
 
-  function handleMintTokens() {
+  async function handleMintTokens() {
     if (!address) return console.error("No address found");
 
-    writeContract({
-      abi,
-      address: contractAddress,
-      functionName: "mint",
-      args: [address as any, BigInt(10 * 10 ** 18)],
-    });
+    try {
+      writeContract(config, {
+        abi,
+        address: contractAddress,
+        functionName: "mint",
+        args: [address as any, BigInt(10 * 10 ** 18)],
+      }).then(() => {
+        toast("🦄 Tokens have been minted!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (

@@ -14,11 +14,14 @@ import "@/styles/globals.css";
 import "@/styles/tailwind.css";
 import Navbar from "@/components/navbar/navbar";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const inter = Inter({ subsets: ["latin"] });
 
 const projectId = "c2d1032a4424947c0a8447929a10a25a";
 
-const config = createConfig({
+export const config = createConfig({
   chains: [celo, celoAlfajores],
   client({ chain }) {
     return createClient({ chain, transport: http() });
@@ -60,6 +63,19 @@ export default function RootLayout({
                 <Navbar />
 
                 <div className="flex flex-col justify-center gap-6 overflow-y-auto pt-5">{children}</div>
+
+                <ToastContainer
+                  position="top-center"
+                  autoClose={3000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="light"
+                />
               </div>
             </body>
           </html>

@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/card";
 
 import { useCelo } from "@celo/react-celo";
-import { useWriteContract } from "wagmi";
+import { writeContract } from "@wagmi/core";
 import { abi, contractAddress } from "@/abi/nft/abi";
+import { toast } from "react-toastify";
+import { config } from "../layout";
+import Link from "next/link";
 
 const artistsMock = [
   {
@@ -34,7 +37,6 @@ const artistsMock = [
     link: "/artist/justin-bieber",
   },
 ];
-
 const ArtistBox = ({ name, img, link }: { name: string; img: string; link: string }) => {
   return (
     <Card extra="items-center justify-center flex-col w-full h-[170px] bg-cover cursor-pointer">
@@ -47,25 +49,39 @@ const ArtistBox = ({ name, img, link }: { name: string; img: string; link: strin
           backgroundRepeat: "no-repeat",
         }}
       >
-        <h4 className="text-primary text-xl font-semibold capitalize dark:text-white">{name}</h4>
+        <h4 className="text-xl font-bold capitalize text-[#FCF6F1] dark:text-white">{name}</h4>
       </div>
     </Card>
   );
 };
 
 export default function Artist() {
-  const { writeContract } = useWriteContract();
   const { address } = useCelo();
 
-  function handleMintNft() {
+  async function handleMintNft() {
     if (!address) return console.error("No address found");
 
-    writeContract({
-      abi,
-      address: contractAddress,
-      functionName: "safeMint",
-      args: [address as any],
-    });
+    try {
+      writeContract(config, {
+        abi,
+        address: contractAddress,
+        functionName: "safeMint",
+        args: [address as any],
+      }).then(() => {
+        toast("🦄 NFT has been minted!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (
@@ -74,7 +90,9 @@ export default function Artist() {
 
       <div className="grid h-full grid-cols-2 gap-4">
         {artistsMock.map((artist, index) => (
-          <ArtistBox key={index} {...artist} />
+          <Link key={index} href={`/artists/${index}`}>
+            <ArtistBox {...artist} />
+          </Link>
         ))}
       </div>
 
@@ -84,7 +102,7 @@ export default function Artist() {
           handleMintNft();
         }}
       >
-        Mint random artist's NFT
+        Mint artist's NFT 🦄
       </Button>
     </>
   );
