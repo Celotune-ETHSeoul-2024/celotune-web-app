@@ -16,7 +16,7 @@ Welcome to **Celotune**, the harmonious fusion of blockchain technology with the
 
 ## 🛠 Technical Stack
 
-- **Frontend**: React.js for a dynamic and responsive user interface.
+- **Frontend**: CeloKit, Celo Contract kit, react-Celo, NextJs, Typescript, Vercel, CSS, Wagmi, Celo Contract kit, react-Celo
 - **Blockchain Integration**: Smart contracts deployed on Celo for secure transactions and NFT functionalities. Storing music and artwork in a decentralized and efficient manner.
 
 ## 💻 Getting Started
