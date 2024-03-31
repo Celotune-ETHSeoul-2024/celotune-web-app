@@ -16,6 +16,7 @@ import { injected } from "@wagmi/connectors";
 import { abi, contractAddress } from "@/abi/nft/abi";
 import { toast } from "react-toastify";
 import { config } from "@/app/layout";
+import { events } from "@/mocks/events";
 
 interface ITicketCounts {
   standard: number;
